@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.image.BufferedImage;
+
 import javax.swing.JFrame;
 
 public class gameWindow extends JFrame{
@@ -8,6 +10,18 @@ public class gameWindow extends JFrame{
 	
 	//frame rates per second (FPS)
 	long fPS = 25;
+	
+	//width of window
+	int windowWidth = 1100;
+	
+	//height of window
+	int windowHeight = 900;
+	
+	//*********temporary start position of the moving circle******* DELETE LATER
+	int x = 0;
+	
+	//memory of the image of the previous frame
+	Image buffer = new BufferedImage(windowWidth, windowHeight, BufferedImage.TYPE_INT_RGB);
 	
 	
 	public static void main(String[] args) {
@@ -21,10 +35,11 @@ public class gameWindow extends JFrame{
 	 */
 	private void makeWindow() {
 		setTitle("Boxy Jump Game");
-		setSize(900,700);
+		setSize(windowWidth,windowHeight);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
+		setResizable(false);
 	}
 	
 	public void run() {
@@ -53,10 +68,26 @@ public class gameWindow extends JFrame{
 	}
 	
 	public void update() {
-		
+		x=x+2;
 	}
 	
 	public void draw() {
+		Graphics printImage = getGraphics();
+		Graphics prevImage = buffer.getGraphics();
+		
+		//red background
+		prevImage.setColor(Color.RED);
+		prevImage.fillRect(0,0,windowWidth,windowHeight-300);
+		
+		//the ground
+		prevImage.setColor(Color.orange);
+		prevImage.fillRect(0, windowHeight-300, windowWidth, 300);
+		
+		//moving white circle
+		prevImage.setColor(Color.orange);
+		prevImage.fillRect(x, windowHeight-350, 50, 50);
+		
+		printImage.drawImage(buffer,0,0,this);
 		
 	}
 }
