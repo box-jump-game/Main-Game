@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
+
 import javax.swing.JFrame;
 
 public class gameWindow extends JFrame{
@@ -13,10 +14,10 @@ public class gameWindow extends JFrame{
 	long fPS = 25;
 	
 	//width of window
-	int windowWidth = 1100;
+	static int windowWidth = 1100;
 	
 	//height of window
-	int windowHeight = 900;
+	static int windowHeight = 900;
 	
 	//*********temporary start position of the moving circle******* DELETE LATER
 	int x = 450;
@@ -32,6 +33,13 @@ public class gameWindow extends JFrame{
 	//object for handling the inputs of the user
 	inputController input = new inputController(this);
 	
+	
+	//background
+	background bg = new background(new Color(255,92,51));
+	//player
+	player box = new player(new Color(255,153,0), new Color(179,89,0), 2, 50, 50);
+	
+	
 		
 	
 	public static void main(String[] args) {
@@ -41,7 +49,7 @@ public class gameWindow extends JFrame{
 	}
 	
 	/*
-	 * Creates the display for the game
+	 * Cr
 	 */
 	private void makeWindow() {
 		setTitle("Boxy Jump Game");
@@ -89,11 +97,11 @@ public class gameWindow extends JFrame{
 		//moves the character/box
 		//moves the character right
 		if (input.keyDown(KeyEvent.VK_RIGHT)) {
-			x+=3;
+			box.moveRight();
 		}
 		
 		if (input.keyDown(KeyEvent.VK_LEFT)) {
-			x-=3;
+			box.moveLeft();
 		}
 	}
 	
@@ -103,22 +111,38 @@ public class gameWindow extends JFrame{
 	 * -draws the sprites and images for the game
 	 */
 	void draw() {
+		//used to draw images
 		Graphics printImage = getGraphics();
 		Graphics prevImage = buffer.getGraphics();
+		//cast to graphics2D class
+		Graphics2D prevImage2D = (Graphics2D)prevImage;
 		
 		//red background
-		prevImage.setColor(Color.RED);
-		prevImage.fillRect(0,0,windowWidth,windowHeight-300);
+		bg.create(prevImage2D);
 		
 		//the ground
-		prevImage.setColor(Color.orange);
-		prevImage.fillRect(0, windowHeight-300, windowWidth, 300);
+		prevImage2D.setColor(new Color(204,68,0));
+		prevImage2D.fillRect(0, windowHeight-300, windowWidth, 300);
 		
 		//character
-		prevImage.setColor(Color.orange);
-		prevImage.fillRect(x, windowHeight-350, 50, 50);
+		box.create(prevImage2D);
+		
+		//text
+		prevImage2D.setFont(new Font("TimesRoman",Font.BOLD, 100));
+		prevImage2D.setColor(Color.white);
+		prevImage2D.drawString("TESTING", windowWidth/2 - 225, 300);
 		
 		printImage.drawImage(buffer, border.left, border.top, this);
 		
+	}
+	
+	//returns the width of the game window
+	public static int windowDimenX() {
+		return gameWindow.windowWidth;
+	}
+	
+	//returns the height of the game window
+	public static int windowDimentY() {
+		return gameWindow.windowHeight;
 	}
 }
