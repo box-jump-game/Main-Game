@@ -1,62 +1,37 @@
 import java.awt.*;
-import javax.swing.JFrame;
+import javax.swing.*;
 
-public class gameWindow extends JFrame{
-	
-	//checks if the game is running
-	boolean isRunning = true;
-	
-	//frame rates per second (FPS)
-	long fPS = 25;
-	
-	
-	public static void main(String[] args) {
-		gameWindow game = new gameWindow();
-		game.run();
-		System.exit(0);
-	}
-	
-	/*
-	 * Creates the display for the game
+public class gameWindow extends Canvas {
+
+	/**
+	 * 
 	 */
-	private void makeWindow() {
-		setTitle("Boxy Jump Game");
-		setSize(900,700);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
-	}
+	private static final long serialVersionUID = -3431428519140837998L;
 	
-	public void run() {
-		makeWindow();
+	//constructor to create the JFrame
+	public gameWindow(int width, int height, String title, game boxGame) {
+		//window for the game
+		JFrame windowGUI = new JFrame(title);
+		//////test button////////
+		JButton startButton = new JButton("Start");
 		
-		while(isRunning) {
-			//time in milliseconds for the beginning of a frame
-			long time = System.currentTimeMillis();
-			
-			update();
-			draw();
-			
-			//delay for each frame ----> track the time in milliseconds between each frame
-			time = (1000/fPS) - (System.currentTimeMillis() - time);
-			
-			if (time > 0) {
-				try {
-					Thread.sleep(time);
-				} catch(Exception e){}
-			}
-		}
+		/////dimensions for the test button////////
+		startButton.setPreferredSize(new Dimension(100,100));
+		startButton.setBounds(120,150,100,100);
+		startButton.setBackground(new Color(255,255,255));
 		
-		setVisible(false);
+		//attributes for the window
+		windowGUI.setPreferredSize(new Dimension(width,height));
+		windowGUI.setMaximumSize(new Dimension(width, height));
+		windowGUI.setMinimumSize(new Dimension(width, height));
 		
+		windowGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		windowGUI.setResizable(false);
+		windowGUI.setLocationRelativeTo(null);
 		
-	}
-	
-	public void update() {
-		
-	}
-	
-	public void draw() {
-		
+		//windowGUI.add(startButton);
+		windowGUI.add(boxGame);
+		windowGUI.setVisible(true);
+		boxGame.start();
 	}
 }
