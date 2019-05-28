@@ -10,6 +10,7 @@ public class gameWindow extends Canvas {
 	
 	//constructor to create the JFrame
 	public gameWindow(int width, int height, String title, game boxGame) {
+
 		//window for the game
 		JFrame windowGUI = new JFrame(title);
 		//////test button////////
@@ -35,3 +36,4 @@ public class gameWindow extends Canvas {
 		boxGame.start();
 	}
 }
+
