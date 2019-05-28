@@ -1,47 +1,25 @@
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 
-public class player implements drawings{
-
-	Color pColor;
-	Color pOutlineColor;
-	float pOutlineWidth;
-	int pWidth;
-	int pHeight;
-	int positionX = 450;
-	
+public class player extends gameObjects{
 	//constructor for the player
-	public player(Color inPColor, Color inPOutlineColor, int inPOutlineWidth, int inPHeight, int inPWidth) {
-		pColor = inPColor;
-		pOutlineColor = inPOutlineColor;
-		pOutlineWidth = inPOutlineWidth;
-		pHeight = inPHeight;
-		pWidth = inPWidth;
+	public player(objectType name, int locationX, int locationY) {
+		super(name, locationX, locationY);
+		speedX = 0;
+		speedY = 0;
 	}
 	
-	//creates the character
-	/*
-	 * @param drawer object used to draw the player
-	 * @param windowWidth width of the game window
-	 * @param windowHeight height of the game window
-	 */
-	public void create(Graphics2D drawer) {
-		drawer.setColor(pColor);
-		drawer.fillRect(positionX, windowY-350, pWidth, pHeight);
+	//updates the speed of the player
+	public void updateObject() {
+		locationX += speedX;
+		locationY += speedY;
 		
-		//outline for the character
-		drawer.setColor(pOutlineColor);
-		drawer.setStroke(new BasicStroke(pOutlineWidth));
-		drawer.drawRect(positionX, windowY-350, pWidth, pHeight);
 	}
 	
-	//moves the character left
-	public void moveLeft() {
-		positionX-=2;
-	}
-	
-	//moves the character right
-	public void moveRight() {
-		positionX+=2;
+	//constantly redraws the player during each update
+	public void renderObject(Graphics2D g2d) {
+		g2d.setColor(new Color(255,26,26));
+		g2d.fillRect(locationX, locationY, 32, 32);
 	}
 }
 
