@@ -10,13 +10,18 @@ public class gameWindow extends Canvas {
 	
 	//constructor to create the JFrame
 	public gameWindow(int width, int height, String title, game boxGame) {
+
+		//window for the game
 		JFrame windowGUI = new JFrame(title);
+		//////test button////////
 		JButton startButton = new JButton("Start");
 		
+		/////dimensions for the test button////////
 		startButton.setPreferredSize(new Dimension(100,100));
 		startButton.setBounds(120,150,100,100);
 		startButton.setBackground(new Color(255,255,255));
 		
+		//attributes for the window
 		windowGUI.setPreferredSize(new Dimension(width,height));
 		windowGUI.setMaximumSize(new Dimension(width, height));
 		windowGUI.setMinimumSize(new Dimension(width, height));
