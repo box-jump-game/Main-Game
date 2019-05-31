@@ -8,11 +8,13 @@ public class gameWindow extends Canvas {
 	 */
 	private static final long serialVersionUID = -3431428519140837998L;
 	
+	//window
+	JFrame windowGUI;
+	
 	//constructor to create the JFrame
 	public gameWindow(int width, int height, String title, game boxGame) {
-
 		//window for the game
-		JFrame windowGUI = new JFrame(title);
+		windowGUI = new JFrame(title);
 		//////test button////////
 		JButton startButton = new JButton("Start");
 		
@@ -35,5 +37,8 @@ public class gameWindow extends Canvas {
 		windowGUI.setVisible(true);
 		boxGame.start();
 	}
+	
+	public JFrame getWindow() {
+		return windowGUI;
+	}
 }
-

@@ -1,3 +1,4 @@
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
@@ -8,8 +9,8 @@ public class snow extends gameObjects{
 	public snow(objectType name, int locationX, int locationY) {
 		super(name, locationX, locationY);
 		Random r = new Random();
-		speedX = r.nextInt(5)-2;
-		speedY = r.nextInt(5)-2;
+		speedX = r.nextInt(5);
+		speedY = r.nextInt(4) + 1;
 	}
 	
 	//updates the actions of the object
@@ -20,6 +21,6 @@ public class snow extends gameObjects{
 	
 	public void renderObject(Graphics2D g2D) {
 		g2D.setColor(new Color(255,255,255));
-		g2D.fillRect(locationX, locationY, 32, 32);
+		g2D.fillRect(locationX, locationY, 8, 8);
 	}
 }
