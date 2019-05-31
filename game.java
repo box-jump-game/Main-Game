@@ -37,13 +37,16 @@ public class game extends Canvas implements Runnable{
 		//random value
 		Random r = new Random();
 		
-		//creates the player object
-		handler.addObject(new player(objectType.PLAYER, WIDTH/2 - 32, HEIGHT/2 - 32));
-		
 		//snow ----> testing ---> just for fun!!!
-		for(int i = 0; i < 50; i++) {
-			handler.addObject(new snow(objectType.SNOW, r.nextInt(WIDTH), r.nextInt(HEIGHT)));
+		for(int i = 0; i < 200; i++) {
+			handler.addObject(new snow(objectType.SNOW, r.nextInt(WIDTH), r.nextInt(HEIGHT) / 2));
 		}
+		
+		//creates the player object
+		handler.addObject(new player(objectType.PLAYER, WIDTH/2 - player.width, HEIGHT- ground.height - player.height));
+		
+		//creates the ground
+		handler.addObject(new ground(objectType.GROUND, 0, HEIGHT - ground.height));
 	}
 	
 	//starts the game
@@ -110,12 +113,12 @@ public class game extends Canvas implements Runnable{
 		
 		Graphics image = buffer.getDrawGraphics();
 		Graphics2D image2D = (Graphics2D) image;
-		ImageIcon background = new ImageIcon ("src/pics/background.jpg"); ///******* --------> insert background image here**//
+		ImageIcon background = new ImageIcon ("src/pics/h11.jpg");
 		
 		
-		//image2D.setColor(new Color(0,0,0));
-		//image2D.fillRect(0, 0, WIDTH, HEIGHT);
-		image2D.drawImage(background.getImage(),0,0, WIDTH, HEIGHT,frame.getWindow());
+		image2D.setColor(new Color(0,0,0));
+		image2D.fillRect(0, 0, WIDTH, HEIGHT);
+		//image2D.drawImage(background.getImage(),0,0, WIDTH, HEIGHT,frame.getWindow());
 		
 		//renders all of the objects
 		handler.render(image2D);
