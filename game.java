@@ -2,6 +2,9 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
+
+
 public class game extends Canvas implements Runnable{
 	
 	/**
@@ -20,9 +23,12 @@ public class game extends Canvas implements Runnable{
 	//object handler for the game
 	private objectHandler handler;
 	
+	//Jframe
+	gameWindow frame;
+	
 	//constructor to create a window object
 	public game() {
-		new gameWindow(WIDTH, HEIGHT,"Box Jumping Game", this);
+		frame = new gameWindow(WIDTH, HEIGHT,"Box Jumping Game", this);
 		//class used to handle all the objects
 		handler = new objectHandler();
 		//add a keyboard listener to listen to all key inputs
@@ -104,9 +110,12 @@ public class game extends Canvas implements Runnable{
 		
 		Graphics image = buffer.getDrawGraphics();
 		Graphics2D image2D = (Graphics2D) image;
+		ImageIcon background = new ImageIcon ("src/pics/background.jpg"); ///******* --------> insert background image here**//
 		
-		image2D.setColor(new Color(0,0,0));
-		image2D.fillRect(0, 0, WIDTH, HEIGHT);
+		
+		//image2D.setColor(new Color(0,0,0));
+		//image2D.fillRect(0, 0, WIDTH, HEIGHT);
+		image2D.drawImage(background.getImage(),0,0, WIDTH, HEIGHT,frame.getWindow());
 		
 		//renders all of the objects
 		handler.render(image2D);
