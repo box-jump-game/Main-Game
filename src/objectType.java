@@ -3,5 +3,6 @@ public enum objectType {
 	SNOW,
 	PLAYER,
 	ENEMY,
-	GROUND
+	GROUND,
+	TREE
 }
