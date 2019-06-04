@@ -1,4 +1,3 @@
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
@@ -6,8 +5,8 @@ import java.util.Random;
 public class snow extends gameObjects{
 	
 	//constructor
-	public snow(objectType name, int locationX, int locationY) {
-		super(name, locationX, locationY);
+	public snow(objectType name, int locationX, int locationY, double drawnTime, boolean add) {
+		super(name, locationX, locationY, drawnTime, add);
 		Random r = new Random();
 		speedX = r.nextInt(5);
 		speedY = r.nextInt(4) + 1;
