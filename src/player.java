@@ -1,15 +1,17 @@
-
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class player extends gameObjects{
 	
 	static int width = 32, height = 32;
+	//speed of the player in each axis
+	static int moveSpeedX = 3, moveSpeedY = 4;
+	//time player stays in the air when jumping and height of the player's jump
+	static int airTime= 200, jumpHeight = 150;
 	
 	//constructor for the player
-	public player(objectType name, int locationX, int locationY) {
-		super(name, locationX, locationY);
+	public player(objectType name, int locationX, int locationY, double drawnTime, boolean add) {
+		super(name, locationX, locationY,drawnTime, add);
 		speedX = 0;
 		speedY = 0;
 	}
