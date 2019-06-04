@@ -8,5 +8,3 @@
 
 //This is for the obstacles, please copy the image from the site
 //https://boostlog.io/@zahine26/making-a-2d-game-in-unity-part-10-5ad9f21747018500491f3f32
-
-
