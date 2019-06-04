@@ -4,9 +4,8 @@ public class ground extends gameObjects{
 	static int height = 216;
 	
 	//constructor for the ground object
-	public ground(objectType name, int locationX, int locationY) {
-		super(name, locationX, locationY);
-		
+	public ground(objectType name, int locationX, int locationY, double drawnTime, boolean add) {
+		super(name, locationX, locationY, drawnTime, add);
 	}
 	
 	public void updateObject() {
