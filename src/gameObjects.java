@@ -11,19 +11,15 @@ public abstract class gameObjects {
 	//speed of object
 	protected int speedX, speedY;
 	
-	//time when the object was drawn
-	protected double drawnTime;
-	
 	//boolean to tell whether all of the objects are already generated
 	//false = all objects already added     true = new objects still need to be added
 	protected boolean add;
 	
 	//constructor for any object
-	public gameObjects(objectType name, int locationX, int locationY, double drawnTime, boolean add) {
+	public gameObjects(objectType name, int locationX, int locationY, boolean add) {
 		this.name = name;
 		this.locationX = locationX;
 		this.locationY = locationY;
-		this.drawnTime = drawnTime;
 		this.add = add;
 	}
 	
@@ -46,11 +42,6 @@ public abstract class gameObjects {
 	//return the current y-value of the object's location
 	public int getLocationY() {
 		return locationY;
-	}
-	
-	//return the time the object was drawn
-	public double getDrawnTime() {
-		return drawnTime;
 	}
 	
 	//return the boolean for the add status
@@ -86,4 +77,3 @@ public abstract class gameObjects {
 	}
 	
 }
-
