@@ -6,17 +6,27 @@ public class keyInputs extends KeyAdapter {
 	private objectHandler handler;
 	
 	//if the key for jumping is already pressed
-	boolean pressed = false;
+	
+	
+	//number of keys used in game
+	int keyNo = 3;
+	
+	//status of keys that are pressed
+	private boolean[] keyPressed = new boolean[keyNo];
 	
 	public keyInputs(objectHandler handler) {
 		this.handler = handler;
+		
+		//all keys are not pressed at the beginning
+		for (int i = 0; i < keyNo; i++) {
+			keyPressed[i] = false;
+		}
 	}
 	
 	//moves the player if key is pressed
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		
-		//System.out.println(key);
 		
 		//loops through all the object in the object list to find the player object
 		for (int i = 0; i < handler.objectList.size(); i++) {
@@ -29,7 +39,7 @@ public class keyInputs extends KeyAdapter {
 				if (key == KeyEvent.VK_UP || key == KeyEvent.VK_SPACE) {
 					
 					//if the character is on the ground, make the go up a certain height at a certain speed
-					if (temp.getLocationY() == game.HEIGHT - ground.height - player.height && !pressed) {
+					if (temp.getLocationY() == game.HEIGHT - ground.height - player.height && !keyPressed[0]) {
 						temp.setLocationY(game.HEIGHT - ground.height - player.height);
 						while (temp.getLocationY() >= game.HEIGHT - ground.height - player.jumpHeight) {
 							temp.setSpeedY(-1*player.moveSpeedY);
@@ -56,15 +66,17 @@ public class keyInputs extends KeyAdapter {
 					}
 					
 					//does not allow the jump key to continuously run the code while the character is jumping
-					pressed = true;
+					keyPressed[0] = true;
 				}
 				//player moves right
 				if (key == KeyEvent.VK_RIGHT) {
 					temp.setSpeedX(player.moveSpeedX);
+					keyPressed[1] = true;
 				}
 				//player moves left
 				if (key == KeyEvent.VK_LEFT) {
 					temp.setSpeedX(-1 * player.moveSpeedX);
+					keyPressed[2] = true;
 				}
 			}
 		}
@@ -72,8 +84,6 @@ public class keyInputs extends KeyAdapter {
 	
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
-		
-		//System.out.println(key);
 		
 		//loops through all the object in the object list to find the player object
 		for (int i = 0; i < handler.objectList.size(); i++) {
@@ -85,14 +95,19 @@ public class keyInputs extends KeyAdapter {
 			if(temp.getName() == objectType.PLAYER) {
 				//player will stop moving right
 				if (key == KeyEvent.VK_UP || key == KeyEvent.VK_SPACE) {
-					pressed = false;
+					keyPressed[0] = false;
 				}
 				//player will stop moving right
 				if (key == KeyEvent.VK_RIGHT) {
-					temp.setSpeedX(0);
+					keyPressed[1] = false;
 				}
 				//player will stop moving left
 				if (key == KeyEvent.VK_LEFT) {
+					keyPressed[2] = false;
+				}
+				
+				//will not move if both right and left keys are pressed
+				if (!keyPressed[1] && !keyPressed[2]) {
 					temp.setSpeedX(0);
 				}
 				

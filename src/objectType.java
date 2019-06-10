@@ -4,5 +4,8 @@ public enum objectType {
 	PLAYER,
 	ENEMY,
 	GROUND,
-	TREE
+	TREE,
+	PATH,
+	MENUSNOW,
+	MOUSEPOINTER
 }
