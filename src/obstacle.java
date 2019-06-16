@@ -20,7 +20,7 @@ public class obstacle extends gameObjects{
 	int obstacleOpt;
 	
 	//minimum distance between each obstacle
-	private int minObSpawnPos = 300;
+	private int minObSpawnPos = 400;
 	
 	//position till next obstacle spawns
 	static int nextObSpawnPos;
@@ -37,14 +37,31 @@ public class obstacle extends gameObjects{
 	//boolean for if the obstacle has already been passed
 	boolean passed = false;
 	
+	//game
+	game Game;
+	
 
-	public obstacle(objectType name, int locationX, int locationY, boolean add, objectHandler handler, gameStats score, boolean passed) {
+	public obstacle(objectType name, int locationX, int locationY, boolean add, objectHandler handler, gameStats score, boolean passed, game Game) {
 		super(name, locationX, locationY, add);
+		
+		//changes the speed the obstacle moves depending on speed difficulty
+		if (Game.gameSpeed == 1) {
+			moveSpeedX = 4;
+			minObSpawnPos = 500;
+		} else if (Game.gameSpeed == 2) {
+			moveSpeedX = 5;
+			minObSpawnPos = 400;
+		} else if (Game.gameSpeed == 3) {
+			moveSpeedX = 6;
+			minObSpawnPos = 300;
+		}
+		
 		speedX = -1 * moveSpeedX;
 		speedY = 0;
 		this.handler = handler;
 		this.score = score;
 		this.passed = passed;
+		this.Game = Game;
 		
 		Random r = new Random();
 		obstacleOpt = r.nextInt(3) + 1;
@@ -60,7 +77,7 @@ public class obstacle extends gameObjects{
 		if (this.getLocationX() < game.WIDTH - nextObSpawnPos && this.getAdd()) {
 			//System.out.println(obstacle.nextObSpawnPos);
 			this.setAdd(false);
-			handler.addObject(new obstacle(objectType.TREE, game.WIDTH, game.HEIGHT - ground.height - obstacle.height, true,handler, score, false));
+			handler.addObject(new obstacle(objectType.TREE, game.WIDTH, game.HEIGHT - ground.height - obstacle.height, true,handler, score, false, Game));
 		}
 
 		// removes the tree obstacle if its x-position crosses the left side of the JFrame
@@ -69,7 +86,7 @@ public class obstacle extends gameObjects{
 			handler.removeObject(this);
 		}
 		
-		if (handler.objectList.get(game.snowFlakes + 1).getLocationX() > this.getLocationX() && !passed) {
+		if (handler.getPlayer().getLocationX() > this.getLocationX() && !passed) {
 			passed = true;
 			score.setPoints(score.getPoints() + 1);
 		}
@@ -103,7 +120,7 @@ public class obstacle extends gameObjects{
 			width = 3*chrTreeWidth;
 			height = chrTreeHeight;
 			tree = new ImageIcon("src/pics/christmas tree 3.png");
-			//System.out.println(width);
+			//System.out.println("tree3");
 			
 			for (int i = 0; i < 3; i++) {
 				g2d.drawImage(tree.getImage(),locationX + i*chrTreeWidth,locationY, chrTreeWidth, height,game.frame);

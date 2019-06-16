@@ -25,7 +25,7 @@ public class menuSnow extends gameObjects{
 		this.menuHandler = menuHandler;
 		
 		spawnTime = System.currentTimeMillis();
-		nextSpawnTime = r.nextInt(2)*250;
+		nextSpawnTime = r.nextInt(2)*500;
 		
 		//speed of the snow flakes
 		speedX = r.nextInt(3) - 2;

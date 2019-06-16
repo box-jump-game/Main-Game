@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 
+import javax.swing.ImageIcon;
+
 
 
 public class menuScreen extends MouseAdapter{
@@ -20,11 +22,26 @@ public class menuScreen extends MouseAdapter{
 	//Y-coordinates of the buttons
 	private int  playPosY = 400, intPosY = playPosY + buttonSpaceHeight + buttonHeight, credPosY =  playPosY + 2*(buttonSpaceHeight + buttonHeight), exPosY =  playPosY + 3*(buttonSpaceHeight + buttonHeight);
 	
+	//attributes for the settings
+	private int stWidth = 75, stHeight = 75;
+	private int stPosX = 25, stPosY = game.HEIGHT - stHeight - 75;
+	
 	//game
 	game Game;
 	
+	//JFrame
+	gameWindow frame;
+	
 	//object handler
 	objectHandler handler;
+	
+	//image of settings icon
+	ImageIcon settingIcon = new ImageIcon("src/pics/settings icon.png");
+	
+	//constructor
+	public menuScreen(gameWindow frame) {
+		this.frame = frame;
+	}
 	
 	public void update() {
 		
@@ -69,6 +86,14 @@ public class menuScreen extends MouseAdapter{
 		g2d.setColor(new Color(128,43,0));
 		g2d.drawRect(buttonPosX, exPosY, buttonWidth, buttonHeight);
 		g2d.drawString("Quit", game.WIDTH/2 - 45, 400 + 3*(buttonSpaceHeight + buttonHeight) + buttonHeight/2 + 10 );
+		
+		//settings button
+		g2d.setColor(new Color(131,255,6));
+		g2d.setStroke(new BasicStroke(5));
+		g2d.fillRect(stPosX, stPosY, stWidth, stHeight);
+		g2d.drawImage(settingIcon.getImage(),stPosX,stPosY, stWidth, stHeight,frame);
+		g2d.setColor(new Color(0,230,0));
+		g2d.drawRect(stPosX, stPosY, stWidth, stHeight);
 	}
 	
 	//accessors for each private variables
@@ -103,5 +128,21 @@ public class menuScreen extends MouseAdapter{
 	public int getExPosY() {
 		return exPosY;
 	}
+	
+	//accessor for the settings button
+	public int getStPosX() {
+		return stPosX;
+	}
+	
+	public int getStPosY() {
+		return stPosY;
+	}
+	
+	public int getStWidth() {
+		return stWidth;
+	}
 
+	public int getStHeight() {
+		return stHeight;
+	}
 }
