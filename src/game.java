@@ -1,7 +1,10 @@
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
 import java.util.Random;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 
 
@@ -41,6 +44,9 @@ public class game extends Canvas implements Runnable{
 	//game stats
 	gameStats score;
 	
+	//game speed
+	int gameSpeed;
+	
 	//random value
 	Random r;
 	
@@ -50,41 +56,66 @@ public class game extends Canvas implements Runnable{
 	instructionScreen instructions;
 	//credits screen
 	creditScreen credits;
+	//pause screen
+	pauseScreen pause;
+	//game over screen
+	gameOver gameOver;
+	//setting screen
+	settingScreen settings;
 	
-	//game states
-	public enum states{
-		MENU,
-		GAME,
-		INSTRUCTIONS,
-		CREDITS
-	}
+	
+	
+	//fps
+	int frames;
+	
 	
 	//default game state
 	public states gameState = states.MENU;
 	
+	//music
+	playMusic music;
+	
+	//player
+	player Player;
+	
 	//constructor to create a window object
-	public game() {
+	public game() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		frame = new gameWindow(WIDTH, HEIGHT,"Box Jumping Game", this);
 		//scoring for the game
-		score = new gameStats();
+		score = new gameStats(this);
 		//class used to handle all the objects
-		handler = new objectHandler(score);
+		handler = new objectHandler(score, this);
 		//class used to handle objects in the menu
 		menuHandler = new menuObjectHandler();
 		//key listener
-		keyListener = new keyInputs(handler);
+		keyListener = new keyInputs(handler, this);
 		
 		
 		//menu
-		menu = new menuScreen();
+		menu = new menuScreen(frame);
 		//instruction screen
 		instructions = new instructionScreen();
 		//credits screen
 		credits = new creditScreen();
+		//pause screen
+		pause = new pauseScreen();
+		//game over screen
+		gameOver = new gameOver(score, handler);
+		//setting screen
+		settings= new settingScreen(this);
+		
+		//music
+		music = new playMusic();
+		
+		//player
+		Player = new player(objectType.PLAYER, WIDTH/2 - player.width, HEIGHT- ground.height - player.height, false, handler,frame, System.currentTimeMillis(), keyListener, this);
 		
 		//mouse listener
-		mouseListener = new mouseInputs(this, handler, menu, instructions, credits);
+		mouseListener = new mouseInputs(this, handler, menu, instructions, credits, gameOver, score, pause, menuHandler, music, Player, settings);
 		
+		
+		//game speed
+		gameSpeed = 2;
 		
 		
 		//add a keyboard listener to listen to all key inputs
@@ -99,8 +130,8 @@ public class game extends Canvas implements Runnable{
 		if (gameState == states.GAME) {
 			startGame();
 		} else {
-			System.out.println("create");
 			menuHandler.addObject(new menuSnow(objectType.MENUSNOW, r.nextInt(WIDTH), 100, true, menuHandler));
+			music.play();
 		}
 	}
 	
@@ -129,7 +160,7 @@ public class game extends Canvas implements Runnable{
 		 double ns = 1000000000 / amountOfTicks;
 		 double delta = 0;
 		 long timer = System.currentTimeMillis();
-		 int frames = 0;
+		 frames = 0;
 		 while(run){
 		  long now = System.nanoTime();
 		     delta += (now - lastTime) / ns;
@@ -165,25 +196,31 @@ public class game extends Canvas implements Runnable{
 		handler.addObject(new ground(objectType.GROUND, 0, HEIGHT - ground.height, false));
 				
 		//creates the player object
-		handler.addObject(new player(objectType.PLAYER, WIDTH/2 - player.width, HEIGHT- ground.height - player.height, false, handler));
+		handler.addObject(Player);
 				
 		//creates obstacles
-		handler.addObject(new obstacle(objectType.TREE, WIDTH, HEIGHT - ground.height - obstacle.height, true, handler, score, false));
+		handler.addObject(new obstacle(objectType.TREE, WIDTH, HEIGHT - ground.height - obstacle.height, true, handler, score, false, this));
 	}
 	
 	
 	//updates actions in the game
 	private void update() {
 		
+		if (score.getLives() == 0) {
+			gameState = states.GAMEOVER;
+		}
+		
+		if (score.getPause()) {
+			gameState = states.PAUSE;
+		}
+		
 		//updates the game when the game is played
 		if (gameState == states.GAME) {
 			handler.update();
 			score.update();
-		
 		//updates actions on the menu screen
 		} else if (gameState == states.MENU) {
 			menuHandler.update();
-			menu.update();
 		//updates on the instructions screen
 		} else if (gameState == states.INSTRUCTIONS) {
 			menuHandler.update();
@@ -192,6 +229,11 @@ public class game extends Canvas implements Runnable{
 		} else if (gameState == states.CREDITS) {
 			menuHandler.update();
 			credits.update();
+		} else if (gameState == states.GAMEOVER) {
+			//gameOver.update();
+		} else if (gameState == states.SETTINGS) {
+			menuHandler.update();
+			settings.update();
 		}
 	}
 	
@@ -228,11 +270,38 @@ public class game extends Canvas implements Runnable{
 		} else if (gameState == states.MENU) {
 			menu.render(image2D);
 			menuHandler.render(image2D);
+			
+		//renders objects in the instructions screen
 		} else if (gameState == states.INSTRUCTIONS) {
 			instructions.render(image2D);
 			menuHandler.render(image2D);
+			
+		//renders objects in the credit screen
 		} else if (gameState == states.CREDITS) {
 			credits.render(image2D);
+			menuHandler.render(image2D);
+			
+		//renders objects in the pause screen
+		} else if (gameState == states.PAUSE) {
+			ImageIcon background = new ImageIcon ("src/pics/sky.png");
+			image2D.drawImage(background.getImage(),0,0, WIDTH, HEIGHT,frame);
+			score.render(image2D);
+			handler.render(image2D);
+			pause.render(image2D);
+			
+		//renders objects in the game over screen
+		} else if (gameState == states.GAMEOVER) {
+			ImageIcon background = new ImageIcon ("src/pics/sky.png");
+			image2D.drawImage(background.getImage(),0,0, WIDTH, HEIGHT,frame);
+			score.render(image2D);
+			
+			//renders all of the objects
+			handler.render(image2D);
+			gameOver.render(image2D);
+			
+		//renders objects in the settings screen
+		} else if (gameState == states.SETTINGS) {
+			settings.render(image2D);
 			menuHandler.render(image2D);
 		}
 		
@@ -241,7 +310,7 @@ public class game extends Canvas implements Runnable{
 	}
 	
 	//creates the game
-	public static void main(String args[]) {
+	public static void main(String args[]) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		new game();
 	}
 }
