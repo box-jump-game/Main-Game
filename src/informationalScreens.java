@@ -36,14 +36,19 @@ public abstract class informationalScreens {
 		g2d.drawRect(intContainerPosX, intContainerPosY, intContainerWidth, intContainerHeight);
 		
 		//menu button
-		g2d.setFont(backFont);
-		g2d.setColor(backFillColor);
-		g2d.fillRect(backPosX, backPosY, backWidth, backHeight);
-		g2d.setColor(backColor);
-		g2d.drawRect(backPosX, backPosY, backWidth, backHeight);
-		g2d.setColor(backFontColor);
+		makeButton(g2d, backPosX, backPosY, backWidth, backHeight, backFillColor, backColor, backFontColor, backFont);
 		g2d.drawString("Menu", backPosX + backWidth/2 - 42, backPosY + backHeight/2 + 12);
-	}	
+	}
+	
+	//makes a button
+	public void makeButton(Graphics2D g2d, int posX, int posY, int width, int height, Color fillColor, Color lineColor, Color fontColor, Font font) {
+		g2d.setFont(font);
+		g2d.setColor(fillColor);
+		g2d.fillRect(posX, posY, width, height);
+		g2d.setColor(lineColor);
+		g2d.drawRect(posX, posY, width, height);
+		g2d.setColor(fontColor);
+	}
 	//accessors
 	public int getBackWidth() {
 		return backWidth;
