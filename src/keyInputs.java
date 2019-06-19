@@ -55,7 +55,7 @@ public class keyInputs extends KeyAdapter {
 
 			if(temp.getName() == objectType.PLAYER) {
 				//player will jump up and come back down
-				if (key == KeyEvent.VK_UP && System.currentTimeMillis() - lastJumpTime > jumpDelay && !jumping) {
+				if (key == KeyEvent.VK_UP && System.currentTimeMillis() - lastJumpTime > jumpDelay && !jumping || key == KeyEvent.VK_SPACE && System.currentTimeMillis() - lastJumpTime > jumpDelay && !jumping) {
 					
 					//resets the pressed status of the up button if it is already pressed
 					keyPressed[0] = false;
@@ -162,5 +162,3 @@ public class keyInputs extends KeyAdapter {
 				
 			}
 		}
-	}
-}
