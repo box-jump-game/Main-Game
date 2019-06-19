@@ -8,7 +8,7 @@ public class player extends gameObjects{
 	static int width = -50, height = 50;
 	//speed of the player in each axis
 	static int moveSpeedX = 3, moveSpeedY = 4;
-	//time player stays in the air when jumping and height of the player's jump
+	//time player stays in the air when jumping and height of the player's jump, also delay between each time
 	static int airTime= 250, jumpHeight = 200, prepJumpTime = 100;
 	
 	//object handler
@@ -76,11 +76,11 @@ public class player extends gameObjects{
 		
 		
 		//set boundaries for the object
-		if (locationX >= game.WIDTH - width) {
-			setLocationX(game.WIDTH - width);
+		if (locationX >= game.WIDTH) {
+			setLocationX(game.WIDTH);
 		}
-		if  (locationX <= 0) {
-			setLocationX(0);
+		if  (locationX <= 0 - width) {
+			setLocationX(0 - width);
 		}
 		if (locationY >= game.HEIGHT - height) {
 			setLocationY(game.HEIGHT - height);
@@ -99,6 +99,7 @@ public class player extends gameObjects{
 			
 			walkSpeed = 300;
 			floatSpeed = 250;
+			
 		} else if (Game.gameSpeed == 2) {
 			moveSpeedX = 3;
 			moveSpeedY = 4;
@@ -109,7 +110,6 @@ public class player extends gameObjects{
 			walkSpeed = 250;
 			floatSpeed = 200;
 			
-			System.out.println("med");
 		} else if (Game.gameSpeed == 3) {
 			moveSpeedX = 4;
 			moveSpeedY = 5;
