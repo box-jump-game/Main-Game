@@ -26,6 +26,12 @@ public class keyInputs extends KeyAdapter {
 	//if player is jumping down
 	boolean jumpDown = false;
 	
+	//delay between each jump
+	double jumpDelay = 100;
+	
+	//last jump time
+	double lastJumpTime = 0;
+	
 	public keyInputs(objectHandler handler, game g) {
 		this.handler = handler;
 		this.g = g;
@@ -49,59 +55,70 @@ public class keyInputs extends KeyAdapter {
 
 			if(temp.getName() == objectType.PLAYER) {
 				//player will jump up and come back down
-				if (key == KeyEvent.VK_UP || key == KeyEvent.VK_SPACE) {
-					jumping = true;
-					player.jumpTime = System.currentTimeMillis();
+				if (key == KeyEvent.VK_UP && System.currentTimeMillis() - lastJumpTime > jumpDelay && !jumping) {
 					
+					//resets the pressed status of the up button if it is already pressed
+					keyPressed[0] = false;
+					
+					jumping = true;
+					
+					//delay between each jump
+					player.jumpTime = System.currentTimeMillis();
+						
 					//time to prepare for jump
 					while (g.gameState == states.GAME && System.currentTimeMillis() - player.jumpTime < player.prepJumpTime) {
 						//System.out.println(System.currentTimeMillis() + "prep jump time: " + prepjumpTime);
 					}
-					
+						
 					//if the character is on the ground, make the go up a certain height at a certain speed
 					if (temp.getLocationY() == game.HEIGHT - ground.height - player.height && !keyPressed[0]) {
 						temp.setLocationY(game.HEIGHT - ground.height - player.height);
-						
+							
 						while (g.gameState == states.GAME && temp.getLocationY() >= game.HEIGHT - ground.height - player.jumpHeight) {
-							System.out.println("jump  up");
+							System.out.print("");
 							jumpUp = true;
 							temp.setSpeedY(-1*player.moveSpeedY);
 						}
-						
+							
 						//stop the character at a certain height above the ground
 						temp.setSpeedY(0);
 						temp.setLocationY(game.HEIGHT - ground.height - player.jumpHeight);
 						jumpUp = false;
-						
+							
 						//time at the peak of the jump
 						double prevAirTime = System.currentTimeMillis();
-						
-						
+							
+							
 						while (g.gameState == states.GAME && System.currentTimeMillis() - prevAirTime < player.airTime) {
 							//System.out.println(System.currentTimeMillis() + " prev air time: " + prevAirTime);
 							jumpDown = true;
 							player.floatPosTime = System.currentTimeMillis();
 						}
-						
-						
+							
+							
 						//make the character fall back down to the ground
 						while (g.gameState == states.GAME && temp.getLocationY() <= game.HEIGHT - ground.height - player.height) {
-							System.out.println("jump  down");
+							System.out.print("");
 							temp.setSpeedY(player.moveSpeedY);
 						}
-						
+							
 						//set the character back to the ground to avoid any discrepancy 
 						temp.setSpeedY(0);
 						temp.setLocationY(game.HEIGHT - ground.height - player.height);
 						jumpDown = false;
+							
+						lastJumpTime = System.currentTimeMillis();
+							
 					}
-					
+						
 					//does not allow the jump key to continuously run the code while the character is jumping
-					keyPressed[0] = true;
 					jumping = false;
+
+					keyPressed[0] = true;
+					
 				}
 				//player moves right
-				if (key == KeyEvent.VK_RIGHT) {
+				if (key == KeyEvent.VK_RIGHT && !jumping) {
 					temp.setSpeedX(player.moveSpeedX);
 					keyPressed[1] = true;
 				}
