@@ -141,7 +141,6 @@ public class mouseInputs extends MouseAdapter{
 		if (Game.gameState == states.GAMEOVER) {
 			//if the user pressed the menu button
 			if (mouseOver(mouseX, mouseY, end.getBackPosX(), end.getBackPosY(), end.getBackWidth(), end.getBackHeight())) {
-				System.out.println("hi");
 				Game.gameState = states.MENU;
 				for (int k = 0; k < 100; k++) {
 					handler.removeAll();
