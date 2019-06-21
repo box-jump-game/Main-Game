@@ -9,7 +9,7 @@ public class player extends gameObjects{
 	//speed of the player in each axis
 	static int moveSpeedX = 3, moveSpeedY = 4;
 	//time player stays in the air when jumping and height of the player's jump, also delay between each time
-	static int airTime= 250, jumpHeight = 200, prepJumpTime = 100;
+	static int airTime= 250, jumpHeight = 200, prepJumpTime = 0;
 	
 	//object handler
 	objectHandler handler;
