@@ -64,11 +64,13 @@ public class keyInputs extends KeyAdapter {
 					
 					//delay between each jump
 					player.jumpTime = System.currentTimeMillis();
-						
+					
+					
 					//time to prepare for jump
 					while (g.gameState == states.GAME && System.currentTimeMillis() - player.jumpTime < player.prepJumpTime) {
 						//System.out.println(System.currentTimeMillis() + "prep jump time: " + prepjumpTime);
 					}
+					
 						
 					//if the character is on the ground, make the go up a certain height at a certain speed
 					if (temp.getLocationY() == game.HEIGHT - ground.height - player.height && !keyPressed[0]) {
@@ -162,3 +164,5 @@ public class keyInputs extends KeyAdapter {
 				
 			}
 		}
+	}
+}
