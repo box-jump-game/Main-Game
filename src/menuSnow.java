@@ -19,10 +19,14 @@ public class menuSnow extends gameObjects{
 	//objectHandler
 	menuObjectHandler menuHandler;
 	
+	//game
+	game Game;
+	
 	//constructor for the menu snow object
-	public menuSnow(objectType name, int locationX, int locationY, boolean add, menuObjectHandler menuHandler) {
+	public menuSnow(objectType name, int locationX, int locationY, boolean add, menuObjectHandler menuHandler, game Game) {
 		super(name, locationX, locationY, add);
 		this.menuHandler = menuHandler;
+		this.Game = Game;
 		
 		spawnTime = System.currentTimeMillis();
 		nextSpawnTime = r.nextInt(2)*500;
@@ -40,7 +44,7 @@ public class menuSnow extends gameObjects{
 		//adds a snow flake based off the next spawn time
 		if (System.currentTimeMillis() - spawnTime > nextSpawnTime && getAdd()) {
 			setAdd(false);
-			menuHandler.addObject(new menuSnow(objectType.MENUSNOW, r.nextInt(game.WIDTH), 10, true, menuHandler));
+			menuHandler.addObject(new menuSnow(objectType.MENUSNOW, r.nextInt(game.WIDTH), 10, true, menuHandler, Game));
 		}
 		
 		//if the snow goes out of the screen remove it
@@ -52,11 +56,11 @@ public class menuSnow extends gameObjects{
 		
 	}
 
-	@Override
 	public void renderObject(Graphics2D g2d) {
-		g2d.setColor(new Color(255,255,255));
-		g2d.fillOval(locationX, locationY, menuSnowWidth, menuSnowHeight);
-		
+		if (Game.gameState == states.MENU) {
+			g2d.setColor(new Color(255,255,255));
+			g2d.fillOval(locationX, locationY, menuSnowWidth, menuSnowHeight);
+		}
 	}
 
 }
