@@ -25,6 +25,9 @@ public class gameStats {
 	//game
 	game Game;
 	
+	//toggle for the pause button being hovered
+	static boolean pauseHover = false;
+	
 	public gameStats(game Game){
 		this.Game = Game;
 	}
@@ -41,7 +44,13 @@ public class gameStats {
 		//draw pause button only in the game state
 		if (Game.gameState == states.GAME) {
 			g2d.setStroke(new BasicStroke(2));
-			g2d.setColor(new Color(72,255,118));
+			
+			if (pauseHover) {
+				g2d.setColor(new Color(0,102,34));
+			} else {
+				g2d.setColor(new Color(72,255,118));
+			}
+			
 			g2d.fillRect(pausePosX, pausePosY, pauseWidth, pauseHeight);
 			g2d.setColor(new Color(255,255,255));
 			g2d.drawRect(pausePosX,pausePosY,pauseWidth,pauseHeight);
