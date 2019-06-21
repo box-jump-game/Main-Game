@@ -13,6 +13,12 @@ public class gameOver extends informationalScreens{
 	//retry button
 	int retryPosX,retryPosY, retryWidth, retryHeight;
 	
+	//toggle for the hover on the retry button
+	boolean gmOvRetryButton;
+	
+	//check if buttons are already reset
+	boolean buttonReset = false;
+	
 	public gameOver(gameStats stats, objectHandler handler){
 		super();
 		this.stats = stats;
@@ -32,6 +38,7 @@ public class gameOver extends informationalScreens{
 		retryPosY = backPosY;
 		retryWidth = backWidth;
 		retryHeight = backHeight;
+		gmOvRetryButton = false;
 	}
 
 	
@@ -42,6 +49,7 @@ public class gameOver extends informationalScreens{
 		super.render(g2d);
 		
 		//title
+		g2d.setColor(backColor);
 		g2d.setFont(new Font("Arial",1, 40));
 		g2d.drawString("Game Over", game.WIDTH/2 - 110, intContainerPosY + 75);
 				
@@ -50,7 +58,7 @@ public class gameOver extends informationalScreens{
 		g2d.drawString("Your score:" + stats.getPoints(), game.WIDTH/2 - 110, intContainerPosY + 75 + 100);
 		
 		//retry button
-		makeButton(g2d, retryPosX, retryPosY, retryWidth, retryHeight, new Color(255,255,102), new Color(255, 166,77), new Color(102,102,0), backFont);
+		makeButton(g2d, retryPosX, retryPosY, retryWidth, retryHeight, new Color(255,255,102), new Color(255, 166,77), new Color(102,102,0), backFont, gmOvRetryButton);
 		g2d.drawString("retry", intContainerPosX + intContainerWidth - backWidth/2 - 25 - 40, backPosY + backHeight - 15);
 	}
 

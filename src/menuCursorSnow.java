@@ -2,38 +2,40 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
-public class menuSnow extends gameObjects{
-	
+public class menuCursorSnow extends gameObjects{
 	//time when the snowflake has spawned
 	private double spawnTime;
-	
+		
 	//time in between for the next snow flake to spawn
 	private int nextSpawnTime;
-	
-	//dimensions of the snowflake
-	static int menuSnowWidth = 8, menuSnowHeight = 8;
-	
-	//random generator
-	Random r = new Random();
 	
 	//objectHandler
 	menuObjectHandler menuHandler;
 	
-	//game
-	game Game;
+	//random generator
+	Random r = new Random();
 	
-	//constructor for the menu snow object
-	public menuSnow(objectType name, int locationX, int locationY, boolean add, menuObjectHandler menuHandler, game Game) {
+	//check if the snow is already created
+	static boolean snowCreated = false;
+	
+	//glow
+	glow Glow;
+	
+	//radius
+	int radius;
+
+	public menuCursorSnow(objectType name, int locationX, int locationY, boolean add, menuObjectHandler menuHandler, glow Glow, int radius) {
 		super(name, locationX, locationY, add);
 		this.menuHandler = menuHandler;
-		this.Game = Game;
+		this.Glow = Glow;
+		this.radius = radius;
 		
 		spawnTime = System.currentTimeMillis();
-		nextSpawnTime = r.nextInt(2)*500;
+		nextSpawnTime = r.nextInt(3)*100;
 		
 		//speed of the snow flakes
-		speedX = r.nextInt(3) - 2;
-		speedY = r.nextInt(3) + 1;
+		speedX = r.nextInt(2) - 1;
+		speedY = r.nextInt(5) + 1;
 	}
 
 	
@@ -44,23 +46,24 @@ public class menuSnow extends gameObjects{
 		//adds a snow flake based off the next spawn time
 		if (System.currentTimeMillis() - spawnTime > nextSpawnTime && getAdd()) {
 			setAdd(false);
-			menuHandler.addObject(new menuSnow(objectType.MENUSNOW, r.nextInt(game.WIDTH), 10, true, menuHandler, Game));
+			radius = r.nextInt(6) + 6;
+			menuHandler.addObject(new menuCursorSnow(objectType.CURSORSNOW, r.nextInt(Glow.glowWidth) + Glow.locationX, Glow.locationY + Glow.glowHeight, true, menuHandler, Glow, radius));
 		}
-		
+				
 		//if the snow goes out of the screen remove it
 		if (this.getLocationX() > game.WIDTH || this.getLocationY() > game.HEIGHT || this.getLocationX() < 0 || this.getLocationY() < 0) {
 			menuHandler.removeObject(this);
 		}
-		
-		menuHandler.addObject(new path(objectType.PATH, locationX, locationY, false, menuHandler, new Color(255,255,255), 0.09));
-		
 	}
 
+
 	public void renderObject(Graphics2D g2d) {
-		if (Game.gameState == states.MENU) {
-			g2d.setColor(new Color(255,255,255));
-			g2d.fillOval(locationX, locationY, menuSnowWidth, menuSnowHeight);
+		if (glow.cursorHover) {
+			g2d.setColor(new Color(255,77,77,192));
+		} else {
+			g2d.setColor(new Color(51,255,51,127));
 		}
+		g2d.fillOval(locationX, locationY, radius, radius);	
 	}
 
 }

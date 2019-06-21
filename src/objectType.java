@@ -1,4 +1,3 @@
-
 public enum objectType {
 	SNOW,
 	PLAYER,
@@ -7,5 +6,6 @@ public enum objectType {
 	TREE,
 	PATH,
 	MENUSNOW,
-	MOUSEPOINTER
+	MOUSEGLOW,
+	CURSORSNOW
 }

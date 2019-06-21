@@ -26,6 +26,13 @@ public class menuScreen extends MouseAdapter{
 	private int stWidth = 75, stHeight = 75;
 	private int stPosX = 25, stPosY = game.HEIGHT - stHeight - 75;
 	
+	//toggles if the buttons are hovered
+	boolean menPlaButton = false;
+	boolean menInsButton = false;
+	boolean menCredButton = false;
+	boolean menExButton = false;
+	boolean menSetButton = false;
+	
 	//game
 	game Game;
 	
@@ -58,37 +65,79 @@ public class menuScreen extends MouseAdapter{
 		
 		//different buttons
 		//play button
-		g2d.setColor(new Color(0,230,115));
+		//if the button is hovered
+		if (menPlaButton) {
+			g2d.setColor(new Color(0,153,0));
+		} else {
+			g2d.setColor(new Color(0,230,115));
+		}
+		
 		g2d.fillRect(game.WIDTH/2 - buttonWidth/2, 400, buttonWidth, buttonHeight);
 		g2d.setColor(new Color(0,153,0));
 		g2d.setStroke(new BasicStroke(5));
 		g2d.drawRect(game.WIDTH/2 - buttonWidth/2, 400, buttonWidth, buttonHeight);
+		
+		if (menPlaButton) {
+			g2d.setColor(new Color(0,230,115));
+		}
+		
 		g2d.drawString("Play", game.WIDTH/2 - 45, 400 + buttonHeight/2 + 10);
 		
 		
 		//button for instructions to play game
-		g2d.setColor(new Color(204,255,51));
+		if (menInsButton) {
+			g2d.setColor(new Color(115,153,0));
+		} else {
+			g2d.setColor(new Color(204,255,51));
+		}
 		g2d.fillRect(buttonPosX, intPosY, buttonWidth, buttonHeight);
 		g2d.setColor(new Color(115,153,0));
 		g2d.drawRect(buttonPosX, intPosY, buttonWidth, buttonHeight);
+		
+		if (menInsButton) {
+			g2d.setColor(new Color(204,255,51));
+		}
+		
 		g2d.drawString("Instructions", game.WIDTH/2 - 105, 400 + buttonSpaceHeight + buttonHeight + buttonHeight/2 + 10 );
 		
 		//button showing contributors to game
-		g2d.setColor(new Color(255,255,102));
+		if (menCredButton) {
+			g2d.setColor(new Color(128,128,0));
+		} else {
+			g2d.setColor(new Color(255,255,102));
+		}
 		g2d.fillRect(buttonPosX, credPosY, buttonWidth, buttonHeight);
 		g2d.setColor(new Color(128,128,0));
 		g2d.drawRect(buttonPosX, credPosY, buttonWidth, buttonHeight);
+		
+		if (menCredButton) {
+			g2d.setColor(new Color(255,255,102));
+		}
+		
 		g2d.drawString("Credits", game.WIDTH/2 - 70, 400 + 2*(buttonSpaceHeight + buttonHeight) + buttonHeight/2 + 10 );
 		
 		//exit button
-		g2d.setColor(new Color(255,102,0));
+		if (menExButton) {
+			g2d.setColor(new Color(128,43,0));
+		} else {
+			g2d.setColor(new Color(255,102,0));
+		}
 		g2d.fillRect(buttonPosX, exPosY, buttonWidth, buttonHeight);
 		g2d.setColor(new Color(128,43,0));
 		g2d.drawRect(buttonPosX, exPosY, buttonWidth, buttonHeight);
+		
+		if (menExButton) {
+			g2d.setColor(new Color(255,102,0));
+		}
+		
 		g2d.drawString("Quit", game.WIDTH/2 - 45, 400 + 3*(buttonSpaceHeight + buttonHeight) + buttonHeight/2 + 10 );
 		
 		//settings button
-		g2d.setColor(new Color(131,255,6));
+		if (menSetButton) {
+			g2d.setColor(new Color(0,230,0));
+		} else {
+			g2d.setColor(new Color(131,255,6));
+		}
 		g2d.setStroke(new BasicStroke(5));
 		g2d.fillRect(stPosX, stPosY, stWidth, stHeight);
 		g2d.drawImage(settingIcon.getImage(),stPosX,stPosY, stWidth, stHeight,frame);

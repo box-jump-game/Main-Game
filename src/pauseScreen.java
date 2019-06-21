@@ -16,6 +16,9 @@ public class pauseScreen extends informationalScreens{
 	//if music is muted
 	boolean muteMusic = false;
 	
+	//toggles for the hover on the retry button and the continue button
+	boolean pauRetryButton = false, pauContButton = false;
+	
 	public pauseScreen() {
 		super();
 		
@@ -63,6 +66,7 @@ public class pauseScreen extends informationalScreens{
 		super.render(g2d);
 		
 		//title
+		g2d.setColor(backColor);
 		g2d.setFont(new Font("Arial",1, 60));
 		g2d.drawString("Pause", game.WIDTH/2 - 90, intContainerPosY + 75);
 		
@@ -86,11 +90,11 @@ public class pauseScreen extends informationalScreens{
 		//g2d.drawRect(mutePosX, mutePosY, muteWidth, muteHeight);
 		
 		//retry button
-		makeButton(g2d, retryPosX, retryPosY, retryWidth, retryHeight, new Color(255,255,102), new Color(255, 166,77), new Color(102,102,0), backFont);
+		makeButton(g2d, retryPosX, retryPosY, retryWidth, retryHeight, new Color(255,255,102), new Color(255, 166,77), new Color(102,102,0), backFont, pauRetryButton);
 		g2d.drawString("Retry", intContainerPosX + intContainerWidth - backWidth/2 - 25 - 45, backPosY + backHeight - 15);
 		
 		//continue button
-		makeButton(g2d, continuePosX, continuePosY, continueWidth, continueHeight, new Color(77, 255, 77), new Color(0,153,0), new Color(32,96,32), backFont);
+		makeButton(g2d, continuePosX, continuePosY, continueWidth, continueHeight, new Color(77, 255, 77), new Color(0,153,0), new Color(32,96,32), backFont, pauContButton);
 		g2d.setFont(new Font("Arial",1, 27));
 		g2d.drawString("Continue", continuePosX + 10, backPosY + backHeight - 15);
 	}

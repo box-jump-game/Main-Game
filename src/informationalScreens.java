@@ -22,6 +22,9 @@ public abstract class informationalScreens {
 	//font size of the menu button
 	protected Font backFont = new Font("Arial", 1, 35);
 	
+	//toggle for the menu button
+	protected boolean infMenButton = false;
+	
 	//updates actions in the screen
 	public abstract void update();
 	
@@ -36,18 +39,29 @@ public abstract class informationalScreens {
 		g2d.drawRect(intContainerPosX, intContainerPosY, intContainerWidth, intContainerHeight);
 		
 		//menu button
-		makeButton(g2d, backPosX, backPosY, backWidth, backHeight, backFillColor, backColor, backFontColor, backFont);
+		makeButton(g2d, backPosX, backPosY, backWidth, backHeight, backFillColor, backColor, backFontColor, backFont, infMenButton);
 		g2d.drawString("Menu", backPosX + backWidth/2 - 42, backPosY + backHeight/2 + 12);
 	}
 	
 	//makes a button
-	public void makeButton(Graphics2D g2d, int posX, int posY, int width, int height, Color fillColor, Color lineColor, Color fontColor, Font font) {
+	public void makeButton(Graphics2D g2d, int posX, int posY, int width, int height, Color fillColor, Color lineColor, Color fontColor, Font font, boolean buttonHover) {
+		//if the button is hovered, change fill color
+		if (buttonHover) {
+			g2d.setColor(lineColor);
+		} else {
+			g2d.setColor(fillColor);
+		}
 		g2d.setFont(font);
-		g2d.setColor(fillColor);
 		g2d.fillRect(posX, posY, width, height);
 		g2d.setColor(lineColor);
 		g2d.drawRect(posX, posY, width, height);
-		g2d.setColor(fontColor);
+		
+		//if the button is hovered, change font color
+		if (buttonHover) {
+			g2d.setColor(fillColor);
+		} else {
+			g2d.setColor(fontColor);
+		}
 	}
 	//accessors
 	public int getBackWidth() {

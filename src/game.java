@@ -78,6 +78,12 @@ public class game extends Canvas implements Runnable{
 	//player
 	player Player;
 	
+	//cursor glow
+	glow Glow;
+	
+	//cursor snow
+	menuCursorSnow cursorSnow;
+	
 	//constructor to create a window object
 	public game() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		frame = new gameWindow(WIDTH, HEIGHT,"Box Jumping Game", this);
@@ -111,7 +117,10 @@ public class game extends Canvas implements Runnable{
 		Player = new player(objectType.PLAYER, WIDTH/2 - player.width, HEIGHT- ground.height - player.height, false, handler,frame, System.currentTimeMillis(), keyListener, this);
 		
 		//mouse listener
-		mouseListener = new mouseInputs(this, handler, menu, instructions, credits, gameOver, score, pause, menuHandler, music, Player, settings);
+		mouseListener = new mouseInputs(this, handler, menu, instructions, credits, gameOver, score, pause, menuHandler, music, Player, settings, frame);
+		
+		//cursor glow
+		Glow = new glow(objectType.MOUSEGLOW, mouseListener.mouseX, mouseListener.mouseY, false, mouseListener);
 		
 		
 		//game speed
@@ -122,15 +131,21 @@ public class game extends Canvas implements Runnable{
 		this.addKeyListener(keyListener);
 		//adds a mouse listener to listen to mouse inputs
 		this.addMouseListener(mouseListener);
+		//adds mouse motion listener
+		this.addMouseMotionListener(mouseListener);
 		
 		//random value
 		r = new Random();
 		
+		
+		//cursor snow
+		cursorSnow = new menuCursorSnow(objectType.CURSORSNOW, r.nextInt(Glow.glowWidth) + Glow.locationX , Glow.locationY + Glow.glowHeight, true, menuHandler, Glow, r.nextInt(6) + 6);
+		
 		//default start for every game
 		if (gameState == states.GAME) {
 			startGame();
-		} else {
-			menuHandler.addObject(new menuSnow(objectType.MENUSNOW, r.nextInt(WIDTH), 100, true, menuHandler));
+		} else if (gameState == states.MENU){
+			menuHandler.addObject(new menuSnow(objectType.MENUSNOW, r.nextInt(WIDTH), 100, true, menuHandler, this));
 			music.play();
 		}
 	}
@@ -206,12 +221,44 @@ public class game extends Canvas implements Runnable{
 	//updates actions in the game
 	private void update() {
 		
+		//changes the action for the default cursor
+		if (frame.defCursorUse) {
+			frame.setDefaultCursor();
+		}
+		
 		if (score.getLives() == 0) {
+			//reset the states of the buttons
+			if (!gameOver.buttonReset) {
+				gameOver.buttonReset = true;
+				gameOver.gmOvRetryButton = false;
+				gameOver.infMenButton = false;
+				
+				//cursor
+				for (int i = 0; i < menuHandler.objectList.size() - 1; i++) {
+					//reset cursor snow
+					if (menuHandler.objectList.get(i).getName() == objectType.CURSORSNOW) {
+						menuHandler.objectList.remove(i);
+						menuCursorSnow.snowCreated = false;
+					}
+					
+					//reset cursor glow
+					if (menuHandler.objectList.get(i).getName() == objectType.MOUSEGLOW) {
+						menuHandler.objectList.remove(i);
+						glow.glowCreated = false;
+					}
+					
+					//remove all menu snow
+					if (menuHandler.objectList.get(i).getName() == objectType.MENUSNOW) {
+						menuHandler.objectList.remove(i);
+					}
+				}
+			}
 			gameState = states.GAMEOVER;
 		}
 		
 		if (score.getPause()) {
 			gameState = states.PAUSE;
+			menuHandler.update();
 		}
 		
 		//updates the game when the game is played
@@ -230,7 +277,7 @@ public class game extends Canvas implements Runnable{
 			menuHandler.update();
 			credits.update();
 		} else if (gameState == states.GAMEOVER) {
-			//gameOver.update();
+			menuHandler.update();
 		} else if (gameState == states.SETTINGS) {
 			menuHandler.update();
 			settings.update();
@@ -288,6 +335,7 @@ public class game extends Canvas implements Runnable{
 			score.render(image2D);
 			handler.render(image2D);
 			pause.render(image2D);
+			menuHandler.render(image2D);
 			
 		//renders objects in the game over screen
 		} else if (gameState == states.GAMEOVER) {
@@ -298,11 +346,11 @@ public class game extends Canvas implements Runnable{
 			//renders all of the objects
 			handler.render(image2D);
 			gameOver.render(image2D);
+			menuHandler.render(image2D);
 			
 		//renders objects in the settings screen
 		} else if (gameState == states.SETTINGS) {
 			settings.render(image2D);
-			menuHandler.render(image2D);
 		}
 		
 		image.dispose();
