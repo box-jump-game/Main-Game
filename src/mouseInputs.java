@@ -232,24 +232,6 @@ public class mouseInputs extends MouseAdapter{
 				
 				window.defCursorUse = true;
 				
-				//cursor
-				for (int i = 0; i < menuHandler.objectList.size() - 1; i++) {
-					if (menuHandler.objectList.get(i).getName() == objectType.CURSORSNOW) {
-						menuHandler.objectList.remove(i);
-						menuCursorSnow.snowCreated = false;
-					}
-					
-					if (menuHandler.objectList.get(i).getName() == objectType.MOUSEGLOW) {
-						menuHandler.objectList.remove(i);
-						glow.glowCreated = false;
-					}
-					
-					//remove all menu snow
-					if (menuHandler.objectList.get(i).getName() == objectType.MENUSNOW) {
-						menuHandler.objectList.remove(i);
-					}
-				}
-				
 				Game.gameState = states.PAUSE;
 			}
 		}
@@ -277,10 +259,6 @@ public class mouseInputs extends MouseAdapter{
 					handler.removeAll();
 				}
 				score.setLives(1);
-				
-				//cursor
-				glow.glowCreated = false;
-				menuCursorSnow.snowCreated = false;
 				
 				menuHandler.addObject(new menuSnow(objectType.MENUSNOW, r.nextInt(game.WIDTH), 100, true, menuHandler, Game));
 				try {
