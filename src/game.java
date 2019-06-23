@@ -231,27 +231,7 @@ public class game extends Canvas implements Runnable{
 			if (!gameOver.buttonReset) {
 				gameOver.buttonReset = true;
 				gameOver.gmOvRetryButton = false;
-				gameOver.infMenButton = false;
-				
-				//cursor
-				for (int i = 0; i < menuHandler.objectList.size() - 1; i++) {
-					//reset cursor snow
-					if (menuHandler.objectList.get(i).getName() == objectType.CURSORSNOW) {
-						menuHandler.objectList.remove(i);
-						menuCursorSnow.snowCreated = false;
-					}
-					
-					//reset cursor glow
-					if (menuHandler.objectList.get(i).getName() == objectType.MOUSEGLOW) {
-						menuHandler.objectList.remove(i);
-						glow.glowCreated = false;
-					}
-					
-					//remove all menu snow
-					if (menuHandler.objectList.get(i).getName() == objectType.MENUSNOW) {
-						menuHandler.objectList.remove(i);
-					}
-				}
+				gameOver.infMenButton = false;	
 			}
 			gameState = states.GAMEOVER;
 		}
@@ -351,6 +331,7 @@ public class game extends Canvas implements Runnable{
 		//renders objects in the settings screen
 		} else if (gameState == states.SETTINGS) {
 			settings.render(image2D);
+			menuHandler.render(image2D);
 		}
 		
 		image.dispose();
@@ -362,3 +343,4 @@ public class game extends Canvas implements Runnable{
 		new game();
 	}
 }
+

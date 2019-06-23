@@ -59,7 +59,7 @@ public class menuScreen extends MouseAdapter{
 		g2d.setColor(new Color(255,255,255));
 		
 		//Title
-		g2d.drawString("Boxy Jump", game.WIDTH/2 - 210, 200);
+		g2d.drawString("Jumpy Christmas", game.WIDTH/2 - 320, 200);
 		
 		g2d.setFont(new Font("Arial",1, 40));
 		
